@@ -22,37 +22,24 @@ const getMasterWalletId = async () => {
     }
   }
 
-  const sendPayout = async (...args) => {
+  const sendPayout = async (id) => {
 
     let obj = routes.sendPayout;
 
-    let responses = [];
-
-    if (args[0] == null || args[0] == undefined) {
-        obj.requestBody.destination.id = "76322b10-cda3-4fae-bafc-54a8a206c4d3";
-    } else {
-
-        for (var i =0; i< args.length; i++) {
-            try {
-                let response = await axios.post(obj.route, obj.requestBody, config);
-                responses.push(response);
-                console.log(response.data.data);
-                //return response.data.data.payments.masterWalletId;
-              } catch (error) {
-                console.error(error)
-              }
-
-        }
-    }
-
-
+    try {
+        let response = await axios.post(obj.route, obj.requestBody, config);
+        console.log(response.data.data);
+        return response.data.data;
+      } catch (error) {
+        console.error(error)
+      }
   }
-  
+
 
   //let masterWalletId = await getMasterWalletId();
 
-  let accounts = ["82812979-ec98-4484-a9bf-c787532e53d9", "a30ad7b9-50b3-4a16-9ca4-4667c7e09d25", "0848fc18-adc7-448b-9b3e-00536da6454b"]
-  console.log(sendPayout());
-  console.log(sendPayout(accounts));
+  console.log(sendPayout("82812979-ec98-4484-a9bf-c787532e53d9"));
   
+  let accounts = ["82812979-ec98-4484-a9bf-c787532e53d9", "a30ad7b9-50b3-4a16-9ca4-4667c7e09d25", "0848fc18-adc7-448b-9b3e-00536da6454b"]
+
 
