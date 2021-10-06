@@ -1,0 +1,29 @@
+{
+
+    "createMockACH": {
+        "method": "POST",
+        "route": "https://api-sandbox.circle.com/v1/mocks/ach/accounts"
+    },
+
+    "createWireAccount": "https://api-sandbox.circle.com/v1/banks/wires",
+
+    "sendPayout": {
+
+        "method": "POST",
+        "route": "https://api-sandbox.circle.com/v1/payouts",
+        "requestBody": {
+            "idempotencyKey": "ff9d668a-ccde-48c3-82fd-8deb2a6f7c28",
+            "destination": {
+              "type": "wire",
+              "id": "76322b10-cda3-4fae-bafc-54a8a206c4d3"
+            },
+            "amount": {
+              "currency": "USD",
+              "amount": "150.00"
+            },
+            "metadata": {
+              "beneficiaryEmail": "john.smith@email.com"
+            }
+          }
+    }
+}
