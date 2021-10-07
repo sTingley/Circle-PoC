@@ -9,7 +9,7 @@ const config = {
 
 const getMasterWalletId = async () => {
   try {
-    let response = await axios.get('https://api-sandbox.circle.com/v1/balances', config);
+    let response = await axios.get('https://api-sandbox.circle.com/v1/configuration', config);
     return response.data.data.payments.masterWalletId;
   } catch (error) {
     console.error(error);
@@ -18,8 +18,36 @@ const getMasterWalletId = async () => {
 
 const getMasterWalletBalance = async () => {
   try {
-    let response = await axios.get('https://api-sandbox.circle.com/v1/configuration', config);
-    return response.data.data.available.amount;
+    let response = await axios.get('https://api-sandbox.circle.com/v1/balances', config);
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getBusinessBankAccounts = async () => {
+  try {
+    let response = await axios.get('https://api-sandbox.circle.com/v1/businessAccount/banks/wires', config);
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const fundMasterAccount = async (trackingRef, amount) => {
+  try {
+    let response = await axios.post(
+      'https://api-sandbox.circle.com/v1/mocks/payments/wire',
+      {
+        trackingRef: trackingRef,
+        amount: {
+          amount: `${amount}`,
+          currency: 'USD'
+        }
+      },
+      config
+    );
+    return response.data.data;
   } catch (error) {
     console.error(error);
   }
@@ -49,6 +77,8 @@ const getCustomerWireAccounts = async () => {
 module.exports = {
   getMasterWalletId,
   getMasterWalletBalance,
+  getBusinessBankAccounts,
   getCustomerWireAccounts,
+  fundMasterAccount,
   sendPayout
 };
