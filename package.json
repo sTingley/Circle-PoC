@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cucumber-js --format message"
+    "test": "cucumber-js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.22.0"
+    "axios": "^0.22.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^7.3.1",

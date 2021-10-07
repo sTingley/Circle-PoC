@@ -1,5 +1,6 @@
 const axios = require('axios');
 const routes = require('./routes.json');
+const { v4: uuid } = require('uuid');
 
 const config = {
   headers: {
@@ -34,6 +35,15 @@ const getBusinessBankAccounts = async () => {
   }
 };
 
+const getCustomerWireAccounts = async () => {
+  try {
+    let response = await axios.get('https://api-sandbox.circle.com/v1/banks/wires', config);
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const fundMasterAccount = async (trackingRef, amount) => {
   try {
     let response = await axios.post(
@@ -53,25 +63,32 @@ const fundMasterAccount = async (trackingRef, amount) => {
   }
 };
 
-const sendPayout = async (id) => {
-  let obj = routes.sendPayout;
-
+const sendWirePayout = async (amount, accountId) => {
+  const idempotencyKey = uuid();
   try {
-    let response = await axios.post(obj.route, obj.requestBody, config);
+    let response = await axios.post(
+      'https://api-sandbox.circle.com/v1/payouts',
+      {
+        idempotencyKey: idempotencyKey,
+        destination: {
+          type: 'wire',
+          id: accountId
+        },
+        amount: {
+          currency: 'USD',
+          amount: amount
+        },
+        metadata: {
+          beneficiaryEmail: 'john.smith@email.com'
+        }
+      },
+      config
+    );
     console.log(response.data.data);
     return response.data.data;
   } catch (error) {
     console.error(error);
   }
-};
-
-const getCustomerWireAccounts = async () => {
-  let accounts = [
-    '82812979-ec98-4484-a9bf-c787532e53d9',
-    'a30ad7b9-50b3-4a16-9ca4-4667c7e09d25',
-    '0848fc18-adc7-448b-9b3e-00536da6454b'
-  ];
-  return accounts;
 };
 
 module.exports = {
@@ -80,5 +97,5 @@ module.exports = {
   getBusinessBankAccounts,
   getCustomerWireAccounts,
   fundMasterAccount,
-  sendPayout
+  sendWirePayout
 };

@@ -34,5 +34,4 @@ When('I wire ${int} from the Bank Account', async (amount) => {
 
 Then('the payment status is pending', function () {
   assert(paymentResponse.status === 'pending');
-  return 'true';
 });
