@@ -12,6 +12,8 @@ Circle is being used in production today. They support a wide variety of use cas
 - Sandbox APIs mirror production environment 1-1
 - `POST /v1/businessAccount/banks/wires` is for 1st party usage
 - `POST /v1/banks/wires` is for 3rd party wire payments/payouts
+- Circle typically processes settlement for all card transactions 3 or 4 business days
+- ACH payments will typically settle within 3 or 4 business days.
 
 ## Constraints
 
