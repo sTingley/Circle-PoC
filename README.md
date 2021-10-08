@@ -8,6 +8,7 @@ Circle is being used in production today. They support a wide variety of use cas
 
 ## Notes
 
+- [Link](https://lucid.app/lucidchart/2b08c7ae-09eb-4e9d-aa0e-9a27143a22bb/edit?beaconFlowId=4F5F3BAC09FD8CE1&invitationId=inv_d08807c6-1d7c-468d-9676-e4fb02b606d9&page=0_0#) to sequence diagram for Circle-related flows
 - Sandbox APIs mirror production environment 1-1
 - `POST /v1/businessAccount/banks/wires` is for 1st party usage
 - `POST /v1/banks/wires` is for 3rd party wire payments/payouts
