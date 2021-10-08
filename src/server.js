@@ -8,6 +8,38 @@ const config = {
   }
 };
 
+const createCryptoWallet = async (describe) => {
+  try {
+    obj = { idempotencyKey: uuid(), description: describe };
+    let response = await axios.post('https://api-sandbox.circle.com/v1/wallets', obj, config);
+    console.log(response.data.data);
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/*Generates a new blockchain address for a wallet for a given currency/chain pair.
+Circle may reuse addresses on blockchains that support reuse. */
+const generateDepositAddress = async (walletId, curr, ch) => {
+  try {
+    obj = { idempotencyKey: uuid(), currency: curr, chain: ch };
+    console.log(obj.idempotencyKey);
+    let response = await axios.post(
+      /* 'https://api-sandbox.circle.com/v1/businessAccount/wallets/addresses/deposit',
+          This URL is balid works but only accepts one idempotencyKey, 'ba943ff1-ca16-49b2-ba55-1057e70ca5c7'.
+          Strange behavior; come back to this... */
+      `https://api-sandbox.circle.com/v1/wallets/${walletId}/addresses`,
+      obj,
+      config
+    );
+    console.log(response.data.data.address);
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const getMasterWalletId = async () => {
   try {
     let response = await axios.get('https://api-sandbox.circle.com/v1/configuration', config);
@@ -159,6 +191,8 @@ const createMockACHAccount = async () => {
 };
 
 module.exports = {
+  createCryptoWallet,
+  generateDepositAddress,
   getMasterWalletId,
   getMasterWalletBalance,
   getBusinessBankAccounts,
