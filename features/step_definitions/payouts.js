@@ -12,7 +12,6 @@ const sleep = (ms) => {
 
 Given("{int} Investor Bank Accounts are linked to END's Circle Account", async (numAccounts) => {
   bankAccounts = await getCustomerACHAccounts();
-  console.log('Hello..................');
   assert(bankAccounts.length >= numAccounts);
 });
 
@@ -34,27 +33,26 @@ When(
 
 Then(
   'the END Circle Account balance should be ${int} less than the initial balance',
-  { timeout: 30 * 1000 },
+  { timeout: 60 * 1000 },
   async (amount) => {
+    console.log('Original Master Total Balance:', originalTotalBalance);
+    console.log(`Will poll account balance every 3 seconds to see when it changes...`);
     // Give payouts time to be deducted from balance
     let payoutsComplete = false;
     let attempts = 0;
     let newTotalBalance;
     while (!payoutsComplete) {
       attempts++;
-      console.log(`Polling account balance. Attempt #${attempts}`);
       const currentBalance = await getMasterWalletBalance();
       newTotalBalance =
         Number(currentBalance.available[0].amount) + Number(currentBalance.unsettled[0].amount);
-      console.log('originalTotalBalance:', originalTotalBalance);
-      console.log('newTotalBalance:', newTotalBalance);
+      console.log(`Attempt #${attempts}. Account balance =`, newTotalBalance);
 
       payoutsComplete = true;
       if (newTotalBalance === originalTotalBalance) {
         payoutsComplete = false;
       }
       // Wait 3 seconds before polling again
-      console.log(`Waiting 3 sec before trying again`);
       await sleep(3000);
     }
     assert(newTotalBalance === originalTotalBalance - amount);
