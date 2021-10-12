@@ -33,7 +33,7 @@ When(
 
 Then(
   'the END Circle Account balance should be ${int} less than the initial balance',
-  { timeout: 60 * 1000 },
+  { timeout: 65 * 1000 },
   async (amount) => {
     console.log('Original Master Total Balance:', originalTotalBalance);
     console.log(`Will poll account balance every 3 seconds to see when it changes...`);
